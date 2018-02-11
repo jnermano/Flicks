@@ -33,12 +33,18 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     class ViewHolder {
-        @BindView(R.id.movie_item_img_cover) ImageView img_cover;
-        @BindView(R.id.movie_item_img_play) ImageView img_play;
-        @BindView(R.id.movie_item_tv_title) TextView tv_tile;
-        @BindView(R.id.movie_item_tv_desc) TextView tv_desc;
-        @BindView(R.id.movie_item_ll_desc) LinearLayout ll_desc;
-        @BindView(R.id.movie_item_ll_cover) RelativeLayout rl_cover;
+        @BindView(R.id.movie_item_img_cover)
+        ImageView img_cover;
+        @BindView(R.id.movie_item_img_play)
+        ImageView img_play;
+        @BindView(R.id.movie_item_tv_title)
+        TextView tv_tile;
+        @BindView(R.id.movie_item_tv_desc)
+        TextView tv_desc;
+        @BindView(R.id.movie_item_ll_desc)
+        LinearLayout ll_desc;
+        @BindView(R.id.movie_item_ll_cover)
+        RelativeLayout rl_cover;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -65,7 +71,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
             viewHolder = new ViewHolder(convertView);
 
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
@@ -88,7 +94,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
 
             imgUri += "w1280/" + movie.getBackdrop_path();
 
-        }else {
+        } else {
             viewHolder.ll_desc.setVisibility(View.VISIBLE);
             viewHolder.img_play.setVisibility(View.GONE);
             imgUri += "w500/" + movie.getPoster_path();
@@ -99,19 +105,19 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
                 .placeholder(R.drawable.loading)
                 .transform(new RoundedCornersTransformation(10, 10))
                 .into(viewHolder.img_cover, new Callback() {
-            @Override
-            public void onSuccess() {
+                    @Override
+                    public void onSuccess() {
 
-            }
+                    }
 
-            @Override
-            public void onError() {
+                    @Override
+                    public void onError() {
 
-            }
-        });
+                    }
+                });
 
         viewHolder.tv_tile.setText(movie.getOriginal_title());
-        viewHolder.tv_desc.setText(String.format(Locale.US, "%s ...", movie.getOverview().substring(0, 100)));
+        viewHolder.tv_desc.setText(String.format(Locale.US, "%s ...", movie.getOverview().substring(0, movie.getOverview().length() > 100 ? 100 : movie.getOverview().length())));
 
         return convertView;
     }
