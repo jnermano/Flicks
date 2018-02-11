@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.video_player24);
+
         listView = (ListView) findViewById(R.id.main_listview);
 
         movies = new ArrayList<>();

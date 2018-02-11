@@ -1,6 +1,7 @@
 package ht.mbds.flicks;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,9 @@ import okhttp3.Response;
 
 public class DetailsActivity extends AppCompatActivity {
 
+    YouTubePlayerSupportFragment youTubePlayerView;
+    Movie movie;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +45,14 @@ public class DetailsActivity extends AppCompatActivity {
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            Movie movie = Movie.fromJson(new JSONObject(intent.getStringExtra("movie")));
+            movie = Movie.fromJson(new JSONObject(intent.getStringExtra("movie")));
+
+            if (movie.getVote_average() > 5){
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+
+            youTubePlayerView =
+                    (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.details_video);
 
             setTitle(movie.getOriginal_title());
 
@@ -91,8 +102,7 @@ public class DetailsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            YouTubePlayerSupportFragment youTubePlayerView =
-                                    (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.details_video);
+
 
                             youTubePlayerView.initialize("AIzaSyAxCgaNNdZBXM8xoOHwVrWyXr5_aSV9J3M",
                                     new YouTubePlayer.OnInitializedListener() {
@@ -101,7 +111,9 @@ public class DetailsActivity extends AppCompatActivity {
                                                                             YouTubePlayer youTubePlayer, boolean b) {
 
                                             // do any work here to cue video, play video, etc.
+
                                             youTubePlayer.cueVideo(videoKey);
+
                                         }
                                         @Override
                                         public void onInitializationFailure(YouTubePlayer.Provider provider,

@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import ht.mbds.flicks.R;
 import ht.mbds.flicks.model.Movie;
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * Created by Ermano
@@ -96,6 +97,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         Picasso.with(getContext())
                 .load(imgUri)
                 .placeholder(R.drawable.loading)
+                .transform(new RoundedCornersTransformation(10, 10))
                 .into(viewHolder.cover, new Callback() {
             @Override
             public void onSuccess() {
@@ -109,7 +111,7 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
         });
 
         viewHolder.tile.setText(movie.getOriginal_title());
-        viewHolder.desc.setText(String.format(Locale.US, "%s ...", movie.getOverview().substring(0, 50)));
+        viewHolder.desc.setText(String.format(Locale.US, "%s ...", movie.getOverview().substring(0, 100)));
 
         return convertView;
     }
