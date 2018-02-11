@@ -123,7 +123,12 @@ public class DetailsActivity extends AppCompatActivity {
 
                                             // do any work here to cue video, play video, etc.
 
-                                            youTubePlayer.cueVideo(videoKey);
+
+                                            if(movie.getVote_average() > 5) {
+                                                youTubePlayer.loadVideo(videoKey);
+                                            } else {
+                                                youTubePlayer.cueVideo(videoKey);
+                                            }
 
                                         }
 
