@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(Color.GRAY);
+        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
