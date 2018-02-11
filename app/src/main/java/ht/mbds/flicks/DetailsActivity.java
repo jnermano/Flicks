@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ht.mbds.flicks.model.Movie;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,6 +31,19 @@ import okhttp3.Response;
 public class DetailsActivity extends AppCompatActivity {
 
     YouTubePlayerSupportFragment youTubePlayerView;
+
+    @BindView(R.id.details_tv_title)
+    TextView tv_title;
+
+    @BindView(R.id.details_tv_desc)
+    TextView tv_desc;
+
+    @BindView(R.id.details_tv_release_date)
+    TextView tv_release_date;
+
+    @BindView(R.id.details_rating)
+    RatingBar ratingBar;
+
     Movie movie;
 
     @Override
@@ -38,41 +53,38 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Bind views
+        ButterKnife.bind(this);
 
+        //get Intent
         Intent intent = getIntent();
 
-        try{
+        try {
 
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+            // get data from caller activity
             movie = Movie.fromJson(new JSONObject(intent.getStringExtra("movie")));
 
-            if (movie.getVote_average() > 5){
+            if (movie.getVote_average() > 5) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
 
-            youTubePlayerView =
-                    (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.details_video);
+            youTubePlayerView = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.details_video);
 
             setTitle(movie.getOriginal_title());
+            tv_title.setText(movie.getOriginal_title());
+            tv_desc.setText(movie.getOverview());
+            tv_release_date.setText(String.format(Locale.US, "Release date : %s", movie.getRelease_date()));
+            ratingBar.setRating((float) (movie.getVote_average() / 2));
 
-            ((TextView) findViewById(R.id.details_tv_title))
-                    .setText(movie.getOriginal_title());
-
-            ((TextView) findViewById(R.id.details_tv_desc))
-                    .setText(movie.getOverview());
-
-            ((TextView) findViewById(R.id.details_tv_release_date))
-                    .setText(String.format(Locale.US, "Release date : %s", movie.getRelease_date()));
-
-            ((RatingBar) findViewById(R.id.details_rating)).setRating((float) (movie.getVote_average() / 2));
-
+            // Loag video list form the current movie
             loadVideo(movie.getId());
 
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -103,7 +115,6 @@ public class DetailsActivity extends AppCompatActivity {
                         public void run() {
 
 
-
                             youTubePlayerView.initialize("AIzaSyAxCgaNNdZBXM8xoOHwVrWyXr5_aSV9J3M",
                                     new YouTubePlayer.OnInitializedListener() {
                                         @Override
@@ -115,6 +126,7 @@ public class DetailsActivity extends AppCompatActivity {
                                             youTubePlayer.cueVideo(videoKey);
 
                                         }
+
                                         @Override
                                         public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                                             YouTubeInitializationResult youTubeInitializationResult) {
